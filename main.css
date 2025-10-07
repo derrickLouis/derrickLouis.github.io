@@ -1,0 +1,646 @@
+/* =========================================
+   Design Tokens
+========================================= */
+/* Light — Coffee & Cream */
+:root[data-theme="cream"] {
+  --c-accent: #8c5e3c;
+  --c-accent-2:#a8754f;
+  --c-accent-3:#5c3a22;
+  --c-text:   #1f1a17;
+  --c-muted:  #6e6258;
+
+  --c-bg-1:#f5f2ee; /* page gradient start */
+  --c-bg-2:#f0ece7; /* sections/cards */
+  --c-bg-3:#f5f2ee;
+
+  --b-accent-10: rgba(31,26,23,0.08);
+  --b-accent-20: rgba(31,26,23,0.12);
+  --b-accent-25: rgba(31,26,23,0.16);
+  --b-accent-30: rgba(31,26,23,0.22);
+
+  /* subtle elevation for light */
+  --shadow-1: 0 6px 18px rgba(31,26,23,0.08);
+
+  --btn-fg: var(--c-text);
+  --btn-bg: rgba(31,26,23,0.05);
+  --btn-bg-hover: rgba(31,26,23,0.12);
+  --btn-bd: rgba(31,26,23,0.18);
+}
+
+/* Dark — Sandstone */
+:root[data-theme="sandstone"] {
+  --c-accent: #c9a875;
+  --c-accent-2:#e1c792;
+  --c-accent-3:#b38b5b;
+  --c-text:   #ede7e1;
+  --c-muted:  #b7ada3;
+
+  --c-bg-1:#0f0d0a;
+  --c-bg-2:#1a1713;
+  --c-bg-3:#0f0d0a;
+
+  --b-accent-10: rgba(201,168,117,0.15);
+  --b-accent-20: rgba(201,168,117,0.22);
+  --b-accent-25: rgba(201,168,117,0.28);
+  --b-accent-30: rgba(201,168,117,0.34);
+
+  /* subtle elevation for dark */
+  --shadow-1: 0 10px 28px rgba(0,0,0,0.35);
+
+  --btn-fg: var(--c-accent);
+  --btn-bg: rgba(201,168,117,0.10);
+  --btn-bg-hover: rgba(201,168,117,0.18);
+  --btn-bd: rgba(201,168,117,0.30);
+}
+
+:root{
+  /* layout */
+  --container-max: 1200px;
+  --container-pad: 2rem;
+
+  /* radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* glass blur strength */
+  --glass: blur(10px);
+
+  /* safe-area */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+
+section { 
+    box-shadow: var(--shadow-1);
+    scroll-margin-top: 80px; 
+}
+
+
+/* =========================================
+   Base / Reset
+========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: var(--c-bg-1); /* in case gradient doesn't paint during load */
+  overscroll-behavior: none; /* block iOS/Chrome rubber-band peeking white */
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, var(--c-bg-1), var(--c-bg-2), var(--c-bg-3));
+  color: var(--c-text);
+  line-height: 1.6;
+  overflow-x: hidden;
+  padding-top: max(0px, var(--safe-top));
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-pad);
+}
+
+/* =========================================
+   Header / Hero
+========================================= */
+header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.hero-title {
+  min-height: 4rem; /* keeps height during typing */
+  margin-bottom: 1rem;
+  font-size: 3.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2), var(--c-accent-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.typing-cursor {
+  color: var(--c-accent);
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.hero-subtitle {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--c-muted);
+}
+
+.hero-location {
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  color: var(--c-accent);
+}
+
+/* =========================================
+   Social Links
+========================================= */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px 20px;
+  color: var(--c-muted);
+  text-decoration: none;
+  background: rgba(0,0,0,0.03);
+  border: 2px solid var(--b-accent-20);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  backdrop-filter: var(--glass);
+}
+
+.social-link:hover {
+  color: var(--c-accent);
+  background: rgba(0,0,0,0.06);
+  border-color: var(--c-accent);
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  font-size: 1.2rem;
+}
+
+/* =========================================
+   Generic Section
+========================================= */
+section {
+  margin: 4rem 0;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--b-accent-10);
+  border-radius: var(--radius-xl);
+  backdrop-filter: var(--glass);
+}
+
+h2 {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: var(--c-accent);
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--c-accent), transparent);
+}
+
+/* =========================================
+   Resume
+========================================= */
+.resume-section { text-align: center; }
+
+.resume-container {
+  margin-bottom: 1.5rem;
+  padding: 2rem;
+  background: var(--c-bg-2);
+  border: 2px dashed var(--c-accent);
+  border-radius: var(--radius-lg);
+}
+
+.resume-placeholder {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  color: var(--c-muted);
+}
+
+.download-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-weight: 600;
+  color: var(--c-bg-1);
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2));
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 238, 207, 0.3);
+}
+
+/* =========================================
+   About
+========================================= */
+.about-text {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--c-muted);
+}
+
+/* =========================================
+   Skills
+========================================= */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.skill-category {
+  padding: 1.5rem;
+  background: var(--c-bg-2);
+  border: 1px solid var(--b-accent-20);
+  border-radius: var(--radius-lg);
+}
+
+.skill-category h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  color: var(--c-accent);
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  color: var(--c-accent);
+  background: rgba(100, 255, 218, 0.1);
+  border: 1px solid var(--b-accent-30);
+  border-radius: 20px;
+}
+
+/* =========================================
+   Projects
+========================================= */
+/* You have TWO targets here:
+   - #projectsCanvas inside .projects-container
+   - #canvas-container from the Three.js mock
+   Keep both if you use both in different pages. */
+
+.projects-container {
+  position: relative;
+  height: 400px;
+  margin: 2rem 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+#projectsCanvas {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg);
+}
+
+/* Three.js mock container */
+#canvas-container {
+  height: clamp(420px, 55vh, 640px);
+}
+
+.canvas-title {
+  margin-top: 10px;
+  font-size: 1.15em;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.canvas-desc {
+  margin-top: 6px;
+  max-width: 900px;
+  margin-inline: auto;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.tech-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.tech-chips .chip {
+  padding: 6px 10px;
+  font-size: 0.9em;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  backdrop-filter: var(--glass);
+}
+
+:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; border-radius: 6px; }
+
+
+/* Projects controls (shared) */
+.projects-controls { text-align: center; margin-top: 1.5rem; }
+
+.control-btn {
+  padding: 8px 16px;
+  color: var(--c-accent);
+  background: rgba(100, 255, 218, 0.1);
+  border: 2px solid var(--c-accent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+  background: rgba(100, 255, 218, 0.2);
+  transform: translateY(-1px);
+}
+
+.project-info { text-align: center; margin-top: 1rem; }
+
+.project-title {
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  color: var(--c-text);
+}
+
+.project-description {
+  margin-bottom: 1rem;
+  color: var(--c-muted);
+}
+
+.project-tech {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tech-tag {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  color: var(--c-accent-2);
+  background: rgba(29, 233, 182, 0.1);
+  border: 1px solid rgba(29, 233, 182, 0.3);
+  border-radius: 4px;
+}
+
+.project-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 8px 16px;
+  color: var(--c-accent);
+  text-decoration: none;
+  background: rgba(100, 255, 218, 0.1);
+  border: 2px solid var(--c-accent);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.project-link:hover {
+  background: rgba(100, 255, 218, 0.2);
+  transform: translateY(-1px);
+}
+
+.project-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Carousel nav buttons (shared with mock) */
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.nav-btn {
+  display:flex; align-items:center; justify-content:center;
+  width:50px; height:50px; font-size:1.5em;
+  color: var(--btn-fg, var(--c-text));
+  background: var(--btn-bg, rgba(0,0,0,0.05));
+  border: 2px solid var(--btn-bd, var(--b-accent-20));
+  border-radius: 50%; cursor: pointer;
+  transition: transform .3s, background .2s, border-color .2s, color .2s;
+  backdrop-filter: var(--glass);
+}
+.nav-btn:hover { background: var(--btn-bg-hover, rgba(0,0,0,0.1)); transform: scale(1.1); }
+.nav-btn:active { transform: scale(0.95); }
+.nav-btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+
+
+/* =========================================
+   Footer
+========================================= */
+footer {
+  text-align: center;
+  padding: 3rem 0;
+  color: var(--c-muted);
+  border-top: 1px solid var(--b-accent-10);
+}
+
+/* =========================================
+   Responsive
+========================================= */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2.5rem; }
+  .hero-subtitle { font-size: 1.2rem; }
+  .container { padding: 0 1rem; }
+  section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+  }
+}
+
+/* Users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+
+/* Fullscreen hero; only hero on first load */
+.hero {
+  position: relative;
+  min-height: 100svh; /* better on mobile than 100vh */
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 5vw, 56px) 0;
+  background: linear-gradient(135deg, var(--c-bg-1), var(--c-bg-2), var(--c-bg-3));
+}
+
+/* 2-col layout that collapses nicely */
+.hero-grid {
+  width: 100%;
+  max-width: var(--container-max);
+  padding: 0 var(--container-pad);
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(24px, 6vw, 56px);
+  align-items: center;
+}
+
+.hero-content {
+  align-self: center;
+}
+
+.hero-avatar {
+  display: grid;
+  place-items: center;
+}
+.hero-avatar img {
+  width: min(420px, 40vw);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 24px;
+  border: 1px solid var(--b-accent-10);
+  box-shadow: var(--shadow-1, 0 10px 28px rgba(0,0,0,.15));
+  /* optional subtle sheen */
+  background:
+    linear-gradient(145deg, rgba(255,255,255,.06), transparent 30%);
+}
+
+/* Keep your existing hero-title/subtitle/location styles;
+   you can bump sizes a bit for the hero-only context if you like: */
+.hero-title { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+.hero-subtitle { font-size: clamp(1.1rem, 2.2vw, 1.4rem); }
+
+/* Divider (top or bottom). The path color matches the next section. */
+.section-divider {
+  position: absolute;
+  left: 0; right: 0;
+  height: 90px;
+  pointer-events: none;
+  filter: drop-shadow(0 -6px 12px rgba(0,0,0,0.12));
+}
+.section-divider.bottom { bottom: -1px; }
+.section-divider.top    { top: -1px; transform: rotate(180deg); }
+.section-divider path   { fill: var(--c-bg-2); }
+
+/* Responsive collapse */
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-avatar img { width: min(68vw, 380px); }
+  .hero { padding-top: clamp(28px, 8vh, 64px); }
+}
+
+
+/* smooth scroll (respects prefers-reduced-motion) */
+html { scroll-behavior: smooth; }
+
+/* top nav */
+.site-nav {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: var(--glass);
+  background: rgba(0,0,0,0.03);
+  background: color-mix(in oklab, var(--c-bg-1) 75%, transparent);
+  border-bottom: 1px solid var(--b-accent-10);
+  transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.site-nav.scrolled {
+  background: rgba(0,0,0,0.06);
+  background: color-mix(in oklab, var(--c-bg-2) 92%, transparent);
+  border-bottom-color: var(--b-accent-20);
+  box-shadow: var(--shadow-1, none);
+}
+.nav-inner {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: .65rem var(--container-pad);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand {
+  display: inline-grid; place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  color: var(--c-text);
+  text-decoration: none;
+  border: 1px solid var(--b-accent-20);
+  background: rgba(0,0,0,0.03);
+  font-weight: 700;
+  letter-spacing: .5px;
+}
+
+.nav-links {
+  list-style: none; display: flex; gap: 1rem; justify-content: center;
+}
+.nav-links a {
+  display: inline-block;
+  padding: .4rem .7rem;
+  color: var(--c-muted);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: color .2s, background .2s;
+}
+.nav-links a:hover { color: var(--c-text); background: rgba(0,0,0,0.04); }
+.nav-links a.active { color: var(--c-accent); background: rgba(0,0,0,0.06); }
+
+/* icon button (theme toggle) */
+.icon-btn {
+  display: inline-grid; place-items: center;
+  width: 38px; height: 38px; border-radius: 10px;
+  color: var(--btn-fg, var(--c-text));
+  background: var(--btn-bg, rgba(0,0,0,0.05));
+  border: 1px solid var(--btn-bd, var(--b-accent-20));
+  cursor: pointer;
+  transition: background .2s, border-color .2s, transform .15s;
+}
+.icon-btn:hover { background: var(--btn-bg-hover, rgba(0,0,0,0.1)); }
+.icon-btn:active { transform: scale(0.97); }
+
+/* show the right icon per theme */
+.sun, .moon { display: none; }
+:root[data-theme="cream"] .sun { display: inline; }       /* light theme shows sun */
+:root[data-theme="cream"] .moon { display: none; }
+:root[data-theme="sandstone"] .sun { display: none; }      /* dark theme shows moon */
+:root[data-theme="sandstone"] .moon { display: inline; }
+
+/* skip link */
+.skip-link {
+  position: absolute; left: -9999px; top: auto; overflow: hidden;
+}
+.skip-link:focus {
+  left: 12px; top: 12px; z-index: 60;
+  background: var(--c-bg-2); color: var(--c-text);
+  border: 1px solid var(--b-accent-20);
+  padding: .5rem .75rem; border-radius: 8px;
+}
+
+/* mobile wrap */
+@media (max-width: 780px) {
+  .nav-inner { grid-template-columns: auto auto 1fr; }
+  .nav-links { display: none; } /* keep it minimal; no hamburger for now */
+}
+
