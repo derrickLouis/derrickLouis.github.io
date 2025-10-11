@@ -6,12 +6,12 @@
   // Config
   // ------------------------------
   const TYPING_TEXTS = [
-    "Hi, Derrick Louis",
+    "Hi, I'm Derrick Louis",
     "An Aspiring Software Engineer",
     "A Curious Problem Solver",
     "An Adaptable Developer",
-    "A CS Student at Georgia Tech",
-    "Am Building the Future"
+    "A CS Student",
+    "An Innovator"
   ];
   const TYPING_SPEED = 100;   // ms per char
   const DELETE_SPEED = 50;    // ms per char
@@ -28,27 +28,55 @@
 
   const PROJECTS = [
     {
-      title: 'E-Commerce Platform',
-      description: 'A full-stack storefront with cart, checkout, and admin analytics. Optimized for Lighthouse performance and accessibility.',
-      image: 'https://picsum.photos/seed/shop/800/600',
-      tech: ['TypeScript', 'Next.js', 'Node', 'PostgreSQL', 'Stripe'],
+      title: 'LinkedIn Social Feed Addition',
+      description: 'Built during LinkedIn’s inaugural hackathon, this project introduced a new email collection block for post creators—streamlining professional inquiries and eliminating spam from the comment section. Developed using Python, Django, HTML, and CSS.',
+      image: 'images/linkedIn.png',
+      tech: ['Python', 'Django', 'HTML', 'CSS'],
       link: '#'
     },
     {
       title: 'Portfolio Website',
-      description: 'Design-forward personal site with dynamic sections, MDX blog, and a 3D projects gallery powered by Three.js.',
-      image: 'https://picsum.photos/seed/port/800/600',
-      tech: ['React', 'Three.js', 'Framer Motion', 'Vercel'],
+      description: 'This site you\'re on now!',
+      image: 'images/website.png',
+      tech: ['HTML','JavaScript', 'Three.js', 'CSS'],
       link: '#'
     },
     {
-      title: 'Mobile App',
-      description: 'Cross-platform app for habit tracking, offline sync, and rich push notifications.',
-      image: 'https://picsum.photos/seed/mobile/800/600',
-      tech: ['React Native', 'Expo', 'Firebase', 'Zustand'],
+      title: 'Collaboarative Tavel Management System',
+      description: 'An Android app that enables users to plan and share trip itineraries in real-time, integrating Firebase for synced data and Java MVVM architecture for scalable design. Features collaborative editing, dynamic forms, and persistent session data.',
+      image: 'images/plane.png',
+      tech: ['Java', 'XML', 'Android Studio', 'Firebase'],
+      link: '#'
+    },
+    {
+      title: 'AI Stock Prediction Model',
+      description: 'Developed an LSTM neural network that predicts stock closing prices using real-time data from the Alpha Vantage API. Includes a Streamlit dashboard for users to visualize trends and test model predictions interactively.',
+      image: 'images/stock.png',
+      tech: ['Python', 'Keras', 'TensorFlow', 'StreamLit'],
+      link: '#'
+    },
+    {
+      title: 'Competitive AI Mouse Maze (WIP)',
+      description: 'An interactive simulation where two AI-controlled mice race through a maze using different search algorithms. Users can select each mouse’s strategy and use the sabotage feature to block paths—demonstrating algorithmic efficiency and adaptability.',
+      image: 'images/mouse.png',
+      tech: ['JavaScript', 'Python', 'React', 'HTML', 'CSS'],
+      link: '#'
+    },
+    {
+      title: 'ASL AI Translator (WIP)',
+      description: 'A computer-vision tool that recognizes American Sign Language gestures via webcam and converts them into text (and eventually speech). Built with OpenCV, MediaPipe, and TensorFlow, aiming to bridge accessibility through real-time translation.',
+      image: 'images/hand.png',
+      tech: ['Python', 'OpenCV', 'MediaPipe', 'TensorFlow', 'Keras'],
       link: '#'
     }
   ];
+
+const CARD_INSET = 0.35;        // safe padding inside the card (world units)
+const TITLE_MAX_LINES = 2;      // wrap to at most 2 lines
+const TITLE_BASE_PX = 36;       // starting font size (canvas px)
+const TITLE_MIN_PX  = 20;       // smallest acceptable font size
+const TITLE_LINE_PX = 42;       // line height for title (canvas px)
+
 
   // ------------------------------
   // Typing Animation
@@ -84,49 +112,174 @@
   // ------------------------------
   // Canvas Textures Helpers
   // ------------------------------
-  function makeTextTexture(renderer, text, opts = {}) {
-    const {
-      paddingX = 16, paddingY = 10,
-      font = '500 36px Segoe UI, system-ui, sans-serif',
-      fg = '#0b0b18', bg = '#ffffff', radius = 18,
-      maxWidth = 1024
-    } = opts;
+  function makeWrappedTextTexture(renderer, text, opts = {}) {
+  const {
+    fontFamily = 'Segoe UI, system-ui, sans-serif',
+    fontWeight = '600',
+    basePx = TITLE_BASE_PX,
+    minPx  = TITLE_MIN_PX,
+    lineHeightPx = TITLE_LINE_PX,
+    paddingX = 18,
+    paddingY = 8,
+    fg = '#0b0b18',
+    bg = '#ffffff',
+    radius = 14,
+    maxWidthPx,          // REQUIRED: max content width in px
+    maxLines = TITLE_MAX_LINES,
+    ellipsis = true
+  } = opts;
 
+  if (!maxWidthPx) throw new Error('makeWrappedTextTexture: maxWidthPx is required');
+
+  // Try decreasing font size until it fits within maxWidthPx & lines
+  for (let fontPx = basePx; fontPx >= minPx; fontPx--) {
     const c = document.createElement('canvas');
     const ctx = c.getContext('2d');
-    ctx.font = font;
-
-    let w = Math.ceil(ctx.measureText(text).width + paddingX * 2);
-    const h = Math.ceil(48 + paddingY * 2);
-    w = Math.min(w, maxWidth);
-
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    c.width = w * dpr; c.height = h * dpr;
-    ctx.scale(dpr, dpr);
 
-    // rounded rect
-    ctx.fillStyle = bg;
-    const r = radius;
-    ctx.beginPath();
-    ctx.moveTo(r, 0);
-    ctx.arcTo(w, 0, w, h, r);
-    ctx.arcTo(w, h, 0, h, r);
-    ctx.arcTo(0, h, 0, 0, r);
-    ctx.arcTo(0, 0, w, 0, r);
-    ctx.closePath();
-    ctx.fill();
+    ctx.font = `${fontWeight} ${fontPx}px ${fontFamily}`;
+    const words = (text || '').trim().split(/\s+/);
+    const lines = [];
+    let current = '';
 
-    // text
-    ctx.font = font;
-    ctx.fillStyle = fg;
-    ctx.textBaseline = 'middle';
-    ctx.fillText(text, paddingX, h / 2);
+    for (let i = 0; i < words.length; i++) {
+      const tryLine = current ? current + ' ' + words[i] : words[i];
+      const w = ctx.measureText(tryLine).width;
+      if (w <= maxWidthPx) {
+        current = tryLine;
+      } else {
+        // push current and start new line
+        if (current) lines.push(current);
+        current = words[i];
 
-    const tex = new THREE.CanvasTexture(c);
-    tex.anisotropy = renderer.capabilities.getMaxAnisotropy?.() || 1;
-    tex.needsUpdate = true;
-    return tex;
+        if (lines.length === maxLines - 1) {
+          // last line—fit remainder with optional ellipsis
+          let last = current + ' ' + words.slice(i + 1).join(' ');
+          // trim until fits
+          while (ctx.measureText(last + (ellipsis ? ' ' : '')).width > maxWidthPx && last.length > 0) {
+            last = last.slice(0, -1);
+          }
+          lines.push(last + (ellipsis ? ' ' : ''));
+          current = '';
+          break;
+        }
+      }
+    }
+    if (current) lines.push(current);
+
+    if (lines.length <= maxLines) {
+      // Build canvas at this font size
+      const textWidth = Math.min(
+        maxWidthPx,
+        Math.max(...lines.map(line => ctx.measureText(line).width), 0)
+      );
+      const contentW = Math.ceil(textWidth);
+      const contentH = Math.ceil(lines.length * lineHeightPx);
+
+      const totalW = Math.ceil(contentW + paddingX * 2);
+      const totalH = Math.ceil(contentH + paddingY * 2);
+
+      c.width = totalW * dpr;
+      c.height = totalH * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // bg rounded rect
+      ctx.fillStyle = bg;
+      const r = radius;
+      ctx.beginPath();
+      ctx.moveTo(r, 0);
+      ctx.arcTo(totalW, 0, totalW, totalH, r);
+      ctx.arcTo(totalW, totalH, 0, totalH, r);
+      ctx.arcTo(0, totalH, 0, 0, r);
+      ctx.arcTo(0, 0, totalW, 0, r);
+      ctx.closePath();
+      ctx.fill();
+
+      // text
+      ctx.font = `${fontWeight} ${fontPx}px ${fontFamily}`;
+      ctx.fillStyle = fg;
+      ctx.textBaseline = 'top';
+      let y = paddingY + (lineHeightPx - fontPx) / 2; // vertical centering within line box
+      for (const line of lines) {
+        ctx.fillText(line, paddingX, y);
+        y += lineHeightPx;
+      }
+
+      const tex = new THREE.CanvasTexture(c);
+      tex.anisotropy = renderer.capabilities.getMaxAnisotropy?.() || 1;
+      tex.needsUpdate = true;
+      return { texture: tex, widthPx: totalW, heightPx: totalH, fontPx, lines };
+    }
   }
+
+  // Fallback: single line clipped
+  const fallback = document.createElement('canvas');
+  const fctx = fallback.getContext('2d');
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const fontPx = TITLE_MIN_PX;
+  fctx.font = `${fontWeight} ${fontPx}px ${fontFamily}`;
+  const truncated = (text || '').slice(0, 40);
+  const textW = Math.min(maxWidthPx, fctx.measureText(truncated).width);
+  const totalW = Math.ceil(textW + paddingX * 2);
+  const totalH = Math.ceil(lineHeightPx + paddingY * 2);
+  fallback.width = totalW * dpr; fallback.height = totalH * dpr;
+  fctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  fctx.fillStyle = bg;
+  fctx.fillRect(0, 0, totalW, totalH);
+  fctx.fillStyle = fg;
+  fctx.fillText(truncated, paddingX, paddingY + (lineHeightPx - fontPx) / 2);
+
+  const tex = new THREE.CanvasTexture(fallback);
+  tex.needsUpdate = true;
+  return { texture: tex, widthPx: totalW, heightPx: totalH, fontPx, lines: [truncated] };
+}
+
+// Simple pill text texture for tech badges
+function makeTextTexture(renderer, text, opts = {}) {
+  const {
+    paddingX = 14, paddingY = 6,
+    font = '500 34px Segoe UI, system-ui, sans-serif',
+    fg = '#0b0b18', bg = '#e9ecff', radius = 12,
+    maxWidth = 1024
+  } = opts;
+
+  const c = document.createElement('canvas');
+  const ctx = c.getContext('2d');
+  ctx.font = font;
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const textW = Math.min(ctx.measureText(text).width, maxWidth);
+  const totalW = Math.ceil(textW + paddingX * 2);
+  const totalH = Math.ceil(48 + paddingY * 2);
+
+  c.width = totalW * dpr; c.height = totalH * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  // rounded rect
+  ctx.fillStyle = bg;
+  const r = radius, w = totalW, h = totalH;
+  ctx.beginPath();
+  ctx.moveTo(r, 0);
+  ctx.arcTo(w, 0, w, h, r);
+  ctx.arcTo(w, h, 0, h, r);
+  ctx.arcTo(0, h, 0, 0, r);
+  ctx.arcTo(0, 0, w, 0, r);
+  ctx.closePath();
+  ctx.fill();
+
+  // text
+  ctx.font = font;
+  ctx.fillStyle = fg;
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, paddingX, h / 2);
+
+  const tex = new THREE.CanvasTexture(c);
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy?.() || 1;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+
 
   function loadImageTexture(url, renderer) {
     return new Promise((resolve, reject) => {
@@ -142,7 +295,7 @@
   }
 
   // ------------------------------
-  // Projects 3D Carousel (supports #canvas-container OR #projectsCanvas)
+  // Projects 3D Carousel
   // ------------------------------
   function startProjects3D(projects = PROJECTS) {
     const container = document.getElementById('canvas-container') || document.getElementById('projectsCanvas');
@@ -219,7 +372,7 @@
     }
     // Sync theme now + on change
     (function syncTheme() {
-      const theme = document.documentElement.getAttribute("data-theme") || "cream";
+      const theme = document.documentElement.getAttribute("data-theme") || "sandstone";
       applyThemeToThree(theme);
     })();
     document.addEventListener("themechange", e => applyThemeToThree(e.detail.theme));
@@ -240,39 +393,82 @@
         edgeMaterial
       ));
 
-      // Thumbnail
-      try {
-        const thumbTex = await loadImageTexture(project.image, renderer);
-        const aspect = thumbTex.image.width / thumbTex.image.height;
-        const thumbW = 3.4;
-        const thumbH = thumbW / aspect;
-        const thumbGeo = new THREE.PlaneGeometry(thumbW, thumbH);
-        const thumbMat = new THREE.MeshBasicMaterial({
-          map: thumbTex, transparent: true, depthTest: true, depthWrite: false,
-          polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: 1
-        });
-        const thumbMesh = new THREE.Mesh(thumbGeo, thumbMat);
-        thumbMesh.position.set(0, 2.0, CARD.OVERLAY_Z);
-        group.add(thumbMesh);
-      } catch (e) { /* image load failed: ignore */ }
+      // Thumbnail (image plane) — auto-fit within safe content rect
+    try {
+      const thumbTex = await loadImageTexture(project.image, renderer);
+      const imgW = thumbTex.image.width;
+      const imgH = thumbTex.image.height;
+      const aspect = imgW / imgH;
+
+      // safe content rect inside the card
+      const contentWWorld = CARD.WIDTH - CARD_INSET * 2;
+      const maxThumbHWorld = 2.6; // adjust for your layout (height budget near top)
+      let thumbW = contentWWorld;
+      let thumbH = thumbW / aspect;
+
+      // if height too tall, scale down
+      if (thumbH > maxThumbHWorld) {
+        thumbH = maxThumbHWorld;
+        thumbW = thumbH * aspect;
+      }
+
+      const thumbGeo = new THREE.PlaneGeometry(thumbW, thumbH);
+      const thumbMat = new THREE.MeshBasicMaterial({
+        map: thumbTex, transparent: true, depthTest: true, depthWrite: false,
+        polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: 1
+      });
+      const thumbMesh = new THREE.Mesh(thumbGeo, thumbMat);
+
+      // keep near top; ensure it doesn't hit the edges visually
+      thumbMesh.position.set(0, 2.0, CARD.OVERLAY_Z);
+      group.add(thumbMesh);
+    } catch (e) {
+      /* ignore image failures */
+    }
+
 
       // On-card title label
+      // Title label (wrapped, responsive)
       {
-        const ttex = makeTextTexture(renderer, project.title, {
-          font: '600 35px Segoe UI, system-ui, sans-serif',
-          fg: '#0b0b18', bg: '#ffffff', paddingX: 18, paddingY: 8, radius: 14
+        // same scale you used before to convert canvas px to world units
+        const pxToWorld = 0.008;
+
+        // compute safe content width inside the card (world units)
+        const contentWWorld = CARD.WIDTH - CARD_INSET * 2;
+
+        // translate to canvas px
+        const maxWidthPx = Math.floor(contentWWorld / pxToWorld);
+
+        const { texture: ttex, widthPx, heightPx } = makeWrappedTextTexture(renderer, project.title, {
+          maxWidthPx,
+          basePx: TITLE_BASE_PX,
+          minPx: TITLE_MIN_PX,
+          lineHeightPx: TITLE_LINE_PX,
+          paddingX: 18,
+          paddingY: 10,
+          fontFamily: 'Segoe UI, system-ui, sans-serif',
+          fontWeight: '600',
+          fg: '#0b0b18',
+          bg: '#ffffff',
+          radius: 14,
+          maxLines: TITLE_MAX_LINES,
+          ellipsis: true
         });
-        const scale = 0.008;
-        const w = ttex.image.width * scale, h = ttex.image.height * scale;
+
+        const w = widthPx * pxToWorld;
+        const h = heightPx * pxToWorld;
         const tgeo = new THREE.PlaneGeometry(w, h);
         const tmat = new THREE.MeshBasicMaterial({
           map: ttex, transparent: true, depthTest: true, depthWrite: false,
           polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: 1
         });
         const tlab = new THREE.Mesh(tgeo, tmat);
+
+        // Place below the image region; tweak Y as needed
         tlab.position.set(0, -0.45, CARD.OVERLAY_Z);
         group.add(tlab);
       }
+
 
       // Tech badges
       {
@@ -533,7 +729,7 @@
 (function setInitialThemeBtn(){
     const btn = document.getElementById('themeToggle');
     if (!btn) return;
-    const theme = document.documentElement.getAttribute('data-theme') || 'cream';
+    const theme = document.documentElement.getAttribute('data-theme') || 'sandstone';
     btn.setAttribute('aria-pressed', theme === 'sandstone' ? 'true' : 'false');
     btn.setAttribute('aria-label', theme === 'sandstone' ? 'Switch to light theme' : 'Switch to dark theme');
 })();
@@ -543,6 +739,15 @@
   // ------------------------------
   document.addEventListener('DOMContentLoaded', () => {
     startTyping();     // no-op if #typingText absent
+
+    ['images/linkedIn.png','images/website.png','images/plane.png','images/stock.png','images/mouse.png','images/hand.png']
+    .forEach(src => {
+      const img = new Image();
+      img.onload  = () => console.log('OK', src, img.width + 'x' + img.height);
+      img.onerror = () => console.error('IMG 404/blocked', src);
+      img.src = src;
+    });
+
     startProjects3D(); // no-op if container absent
 
     const nav = document.querySelector('.site-nav');

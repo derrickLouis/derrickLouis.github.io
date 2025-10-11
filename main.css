@@ -298,7 +298,7 @@ h2::after {
   padding: 4px 12px;
   font-size: 0.9rem;
   color: var(--c-accent);
-  background: rgba(100, 255, 218, 0.1);
+  background: rgba(255, 233, 168, 0.1);
   border: 1px solid var(--b-accent-30);
   border-radius: 20px;
 }
@@ -516,16 +516,20 @@ footer {
   display: grid;
   place-items: center;
 }
+
+/* round the actual image, keep full image visible */
 .hero-avatar img {
-  width: min(420px, 40vw);
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 24px;
+  /* width: min(420px, 40vw); */
+  width: auto;
+  max-height: clamp(260px, 50vh, 560px);
+  height: auto;              /* preserve natural ratio */
+  object-fit: contain;       /* show entire image */
+  border-radius: 50px;       /* ← rounded corners on the image itself */
+  padding: 1px;              /* optional frame padding */
+  background: linear-gradient(145deg, rgba(255,255,255,.06), transparent 30%);
   border: 1px solid var(--b-accent-10);
-  box-shadow: var(--shadow-1, 0 10px 28px rgba(0,0,0,.15));
-  /* optional subtle sheen */
-  background:
-    linear-gradient(145deg, rgba(255,255,255,.06), transparent 30%);
+  box-shadow: var(--shadow-1);
+  display: block;            /* avoid inline-gap artifacts */
 }
 
 /* Keep your existing hero-title/subtitle/location styles;
@@ -536,14 +540,25 @@ footer {
 /* Divider (top or bottom). The path color matches the next section. */
 .section-divider {
   position: absolute;
-  left: 0; right: 0;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--container-max) - 2 * var(--container-pad));
+  max-width: 100%;
   height: 90px;
   pointer-events: none;
   filter: drop-shadow(0 -6px 12px rgba(0,0,0,0.12));
 }
-.section-divider.bottom { bottom: -1px; }
-.section-divider.top    { top: -1px; transform: rotate(180deg); }
+
 .section-divider path   { fill: var(--c-bg-2); }
+
+@media (max-width: 780px) {
+  .section-divider {
+    width: calc(100% - 2 * var(--container-pad));
+    height: 70px;
+  }
+}
+
 
 /* Responsive collapse */
 @media (max-width: 900px) {
