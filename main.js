@@ -829,6 +829,34 @@ function paletteFor(theme){
     window.addEventListener('scroll', onScroll, { passive: true });
   });
 
+  // Back to Top
+(() => {
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+
+  const showAfter = window.innerHeight * 0.6;   // show after ~60% of viewport
+  let ticking = false;
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY || window.pageYOffset;
+      if (y > showAfter) btn.classList.add('show');
+      else btn.classList.remove('show');
+      ticking = false;
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // set initial state
+
+  btn.addEventListener('click', () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+})();
+
   // ------------------------------
   // Public: Resume download
   // ------------------------------
