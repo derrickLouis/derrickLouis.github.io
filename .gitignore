@@ -1,0 +1,7 @@
+# Dependencies
+node_modules/
+
+# OS cruft
+.DS_Store
+desktop.ini
+Thumbs.db
