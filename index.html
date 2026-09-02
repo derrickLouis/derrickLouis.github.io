@@ -6,7 +6,6 @@
   <title>Derrick Louis - Software Engineer</title>
   <meta name="description" content="Derrick Louis — CS student at Georgia Tech. Projects, skills, and interactive Three.js portfolio." />
   <link rel="stylesheet" href="main.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 </head>
 <body>
   <!-- Skip to content (a11y) -->
@@ -76,10 +75,11 @@
     <section id="resume" class="resume-section">
       <h2>Resume</h2>
       <div class="resume-container">
-        <p class="resume-placeholder">📄 Click below to download my resume</p>
-        <p style="color:#8892b0;font-size:0.9rem;margin-bottom:1rem;">Updated: October 2025</p>
+        <p class="resume-note">
+          My current resume is available on request &mdash; reach me on
+          <a href="https://linkedin.com/in/dj-louis" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+        </p>
       </div>
-      <a href="#" class="download-btn" onclick="downloadResume()" role="button">⬇️ Download Resume PDF</a>
     </section>
 
     <!-- About -->
@@ -96,25 +96,84 @@
 
     <!-- Projects -->
     <section id="projects">
-      <div class="projects-section">
-        <h2>My Projects</h2>
+      <h2>My Projects</h2>
+      <ul class="project-grid">
 
-        <!-- Three.js mount -->
-        <div id="canvas-container"></div>
+        <li class="project-card">
+          <img class="project-media" src="images/linkedIn.png" alt="Screenshot of the LinkedIn email collection block" loading="lazy" width="800" height="500">
+          <div class="project-body">
+            <h3 class="project-name">LinkedIn Social Feed Addition</h3>
+            <p class="project-desc">Built during LinkedIn&rsquo;s inaugural hackathon. Adds an email collection block for post creators, streamlining professional inquiries and keeping the comment section free of contact spam.</p>
+            <ul class="project-tech"><li>Python</li><li>Django</li><li>HTML</li><li>CSS</li></ul>
+            <p class="project-links">
+              <a class="project-link" href="https://github.com/derrickLouis/LinkedIn-Hackathon">
+                <svg class="gh" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+                Source
+              </a>
+            </p>
+          </div>
+        </li>
 
-        <!-- Focused project info -->
-        <p id="active-title" class="canvas-title"></p>
-        <p id="active-desc" class="canvas-desc"></p>
-        <div id="active-tech" class="tech-chips"></div>
+        <li class="project-card">
+          <img class="project-media" src="images/stock.png" alt="Screenshot of the stock prediction dashboard" loading="lazy" width="800" height="500">
+          <div class="project-body">
+            <h3 class="project-name">AI Stock Prediction Model</h3>
+            <p class="project-desc">An LSTM neural network that predicts stock closing prices from live Alpha Vantage data, with a Streamlit dashboard for visualizing trends and testing predictions interactively.</p>
+            <ul class="project-tech"><li>Python</li><li>Keras</li><li>TensorFlow</li><li>Streamlit</li></ul>
+            <p class="project-links">
+              <a class="project-link" href="https://github.com/derrickLouis/stock-predict">
+                <svg class="gh" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+                Source
+              </a>
+            </p>
+          </div>
+        </li>
 
-        <br />
+        <li class="project-card">
+          <img class="project-media" src="images/plane.png" alt="Screenshot of the travel planning Android app" loading="lazy" width="800" height="500">
+          <div class="project-body">
+            <h3 class="project-name">Collaborative Travel Management System</h3>
+            <p class="project-desc">An Android app for planning and sharing trip itineraries in real time, using Firebase for synced data and Java MVVM for scalable design. Supports collaborative editing, dynamic forms, and persistent sessions.</p>
+            <ul class="project-tech"><li>Java</li><li>XML</li><li>Android Studio</li><li>Firebase</li></ul>
+          </div>
+        </li>
 
-        <!-- Carousel controls -->
-        <div class="nav-buttons">
-          <button class="nav-btn" id="prev-btn" aria-label="Previous project">‹</button>
-          <button class="nav-btn" id="next-btn" aria-label="Next project">›</button>
-        </div>
-      </div>
+        <li class="project-card">
+          <img class="project-media" src="images/mouse.png" alt="Screenshot of the AI mouse maze simulation" loading="lazy" width="800" height="500">
+          <div class="project-body">
+            <p class="project-status">In progress</p>
+            <h3 class="project-name">Competitive AI Mouse Maze</h3>
+            <p class="project-desc">Two AI-controlled mice race through a maze using different search algorithms. Pick each mouse&rsquo;s strategy and use the sabotage feature to block paths, showing how the algorithms adapt under pressure.</p>
+            <ul class="project-tech"><li>JavaScript</li><li>Python</li><li>React</li><li>HTML</li><li>CSS</li></ul>
+          </div>
+        </li>
+
+        <li class="project-card">
+          <img class="project-media" src="images/hand.png" alt="Screenshot of the ASL gesture recognition tool" loading="lazy" width="800" height="500">
+          <div class="project-body">
+            <p class="project-status">In progress</p>
+            <h3 class="project-name">ASL AI Translator</h3>
+            <p class="project-desc">A computer-vision tool that recognizes American Sign Language gestures through a webcam and converts them to text, and eventually speech, aiming at real-time accessibility.</p>
+            <ul class="project-tech"><li>Python</li><li>OpenCV</li><li>MediaPipe</li><li>TensorFlow</li><li>Keras</li></ul>
+          </div>
+        </li>
+
+        <li class="project-card">
+          <img class="project-media" src="images/website.png" alt="Screenshot of this portfolio site" loading="lazy" width="800" height="500">
+          <div class="project-body">
+            <h3 class="project-name">Portfolio Website</h3>
+            <p class="project-desc">This site. A hand-built static portfolio with a light and dark theme, no framework and no build step.</p>
+            <ul class="project-tech"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+            <p class="project-links">
+              <a class="project-link" href="https://github.com/derrickLouis/derrickLouis.github.io">
+                <svg class="gh" viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+                Source
+              </a>
+            </p>
+          </div>
+        </li>
+
+      </ul>
     </section>
 
     <!-- Skills -->
@@ -189,16 +248,10 @@
   <!-- Footer -->
   <footer>
     <div class="container">
-      <p>Built with ❤️ using modern web technologies</p>
+      <p>Built and maintained by hand.</p>
       <p>© 2025 Derrick Louis. All rights reserved.</p>
     </div>
   </footer>
-
-  <noscript>
-    <div class="container" style="margin-top:1rem;color:#ffecb3">
-      This site uses JavaScript for the interactive projects section. Please enable JavaScript to view it.
-    </div>
-  </noscript>
 
   <script src="main.js" defer></script>
 </body>
